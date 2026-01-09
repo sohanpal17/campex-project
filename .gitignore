@@ -31,7 +31,7 @@ mvnw.cmd
 *.rar
 
 # Secrets (Important!)
-google-credentials.json
+google-credentials.json.json
 firebase-service-account.json
 application-local.properties
 application-secret.properties
