@@ -1,0 +1,32 @@
+export const ROUTES = {
+  LANDING: '/',
+  LOGIN: '/login',
+  SIGNUP: '/signup',
+  VERIFY_EMAIL: '/verify-email',
+  PROFILE_SETUP: '/profile-setup',
+  FORGOT_PASSWORD: '/forgot-password',
+  HOME: '/home',
+  SEARCH: '/search',
+  REQUESTS: '/requests',
+  ITEM_DETAILS: '/item/:id',
+  SELL: '/sell',
+  EDIT_LISTING: '/sell/edit/:id',
+  EDIT_PROFILE: '/edit-profile',
+  CHATS: '/chats',
+  CHAT_DETAIL: '/chats/:id',
+  PROFILE: '/profile',
+  USER_LISTINGS: '/user/:userId',
+  NOTIFICATIONS: '/notifications',
+  SETTINGS: '/settings',
+  REPORT: '/report',
+  BLOCKED_USERS: '/blocked-users',
+  NOT_FOUND: '*',
+};
+
+export const generateRoute = {
+  itemDetails: (id) => `/item/${id}`,
+  editListing: (id) => `/sell/edit/${id}`,
+  chatDetail: (id) => `/chats/${id}`,
+  chat: (userId) => `/chats/${userId}`,
+  userListings: (userId) => `/user/${userId}`,
+};
