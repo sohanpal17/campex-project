@@ -160,7 +160,7 @@ const ProductCard = ({ product, onSaveToggle }) => {
         {/* Available for Rent Badge - Overlay */}
         {product.isAvailableForRent && (
           <div className="absolute top-3 left-3 z-10">
-            <Badge size="sm" className="bg-green-600 text-white border-none shadow-md">
+            <Badge size="sm" className="!bg-green-600 !text-white !border-none shadow-md">
               Rent Available
             </Badge>
           </div>
