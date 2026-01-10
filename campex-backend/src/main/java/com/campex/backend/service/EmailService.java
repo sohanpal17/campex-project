@@ -32,7 +32,10 @@ public class EmailService {
         if (mailPassword == null || mailPassword.isEmpty()) {
             log.warn("MAIL_PASSWORD environment variable is not set! Email functionality will not work.");
         } else {
-            log.info("Email configuration validated. Host: {}, Username: {}", mailHost, mailUsername);
+            log.info("Email configuration validated.");
+            log.info("Host: '{}'", mailHost);
+            log.info("Username: '{}'", mailUsername);
+            log.info("Password Length: {}", mailPassword.length());
         }
     }
 
