@@ -64,7 +64,7 @@ const SettingsPage = () => {
         <h1 className="text-3xl font-bold text-gray-900 mb-8">Settings</h1>
 
         <div className="space-y-6">
-          
+
 
           {/* Privacy & Security */}
           <div className="bg-white rounded-lg shadow-sm p-6">
@@ -116,7 +116,7 @@ const SettingsPage = () => {
               </button>
               <button
                 id="mail-us-button"
-                onClick={() => window.location.href = 'mailto:sohan.work.ai179@gmail.com?subject=Mail%20Us&body=Please describe your request or issue:'}
+                onClick={() => window.open('https://mail.google.com/mail/?view=cm&fs=1&to=sohan.work.ai179@gmail.com&su=Mail%20Us&body=Please describe your request or issue:', '_blank')}
                 className={`w-full flex items-center justify-between p-4 hover:bg-gray-50 rounded-lg transition-colors text-left ${highlightMailUs ? 'animate-pulse bg-primary-100 border-2 border-primary-500' : ''
                   }`}
               >
@@ -141,7 +141,7 @@ const SettingsPage = () => {
             </div>
           </div>
 
-          
+
 
           {/* Logout */}
           <div className="bg-white rounded-lg shadow-sm p-6">
