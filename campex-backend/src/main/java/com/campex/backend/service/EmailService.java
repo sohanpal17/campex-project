@@ -24,6 +24,9 @@ public class EmailService {
     @Value("${spring.mail.username:}")
     private String mailUsername;
     
+    @Value("${app.email.sender:noreply@campex.com}")
+    private String senderEmail;
+    
     @Value("${spring.mail.host:}")
     private String mailHost;
 
@@ -49,7 +52,7 @@ public class EmailService {
         
         try {
             SimpleMailMessage message = new SimpleMailMessage();
-            message.setFrom(mailUsername != null && !mailUsername.isEmpty() ? mailUsername : "noreply@campex.com");
+            message.setFrom(senderEmail);
             message.setTo(to);
             message.setSubject(subject);
             message.setText(text);
@@ -79,7 +82,7 @@ public class EmailService {
         
         try {
             SimpleMailMessage message = new SimpleMailMessage();
-            message.setFrom(mailUsername != null && !mailUsername.isEmpty() ? mailUsername : "noreply@campex.com");
+            message.setFrom(senderEmail);
             message.setTo(to);
             message.setSubject(subject);
             message.setText(text);
