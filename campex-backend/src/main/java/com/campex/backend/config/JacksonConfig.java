@@ -2,14 +2,11 @@ package com.campex.backend.config;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -19,38 +16,45 @@ import java.time.ZonedDateTime;
 @Configuration
 public class JacksonConfig {
 
+    /**
+     * Custom serializer for LocalDateTime.
+     * Important: LocalDateTime has no timezone information.
+     * Since the database stores dates without timezone and the server runs in UTC (like Render),
+     * we need to interpret stored LocalDateTime values correctly.
+     * 
+     * Strategy: Treat LocalDateTime from database as UTC (since cloud servers run in UTC),
+     * and serialize as ISO-8601 with explicit UTC timezone ('Z' suffix).
+     * The frontend will then parse this as UTC and display in user's local timezone (IST for India).
+     * 
+     * Example: LocalDateTime "2024-01-10T07:11:25" -> "2024-01-10T07:11:25Z" (treated as UTC)
+     */
     @Bean
-    @Primary
-    public ObjectMapper objectMapper(Jackson2ObjectMapperBuilder builder) {
-        JavaTimeModule javaTimeModule = new JavaTimeModule();
-        
-        // Serialize LocalDateTime with explicit timezone information
-        // Always treat LocalDateTime as IST (Asia/Kolkata) timezone and convert to UTC for transmission
-        // This ensures consistent API responses regardless of server deployment location
-        // The server's default timezone is set to IST in CampexApplication.init()
-        javaTimeModule.addSerializer(LocalDateTime.class, new JsonSerializer<LocalDateTime>() {
-            private static final ZoneId IST_TIMEZONE = ZoneId.of("Asia/Kolkata");
-            private static final ZoneId UTC_TIMEZONE = ZoneId.of("UTC");
+    public Jackson2ObjectMapperBuilderCustomizer jsonCustomizer() {
+        return builder -> {
+            JavaTimeModule javaTimeModule = new JavaTimeModule();
             
-            @Override
-            public void serialize(LocalDateTime value, JsonGenerator gen, SerializerProvider serializers) 
-                    throws IOException {
-                if (value == null) {
-                    gen.writeNull();
-                } else {
-                    // Treat LocalDateTime as IST (consistent with server default timezone) and convert to UTC
-                    ZonedDateTime istDateTime = value.atZone(IST_TIMEZONE);
-                    ZonedDateTime utcDateTime = istDateTime.withZoneSameInstant(UTC_TIMEZONE);
-                    // Format as ISO-8601 string with UTC timezone (e.g., "2024-01-01T10:00:00Z")
-                    gen.writeString(utcDateTime.toInstant().toString());
+            // Serialize LocalDateTime as UTC with 'Z' suffix
+            javaTimeModule.addSerializer(LocalDateTime.class, new JsonSerializer<LocalDateTime>() {
+                private static final ZoneId UTC = ZoneId.of("UTC");
+                
+                @Override
+                public void serialize(LocalDateTime value, JsonGenerator gen, SerializerProvider serializers) 
+                        throws IOException {
+                    if (value == null) {
+                        gen.writeNull();
+                    } else {
+                        // Treat LocalDateTime as UTC (database stores without timezone, cloud servers typically in UTC)
+                        // Convert to ZonedDateTime at UTC, then to Instant, then format as ISO-8601 string with 'Z'
+                        ZonedDateTime utcDateTime = value.atZone(UTC);
+                        String isoString = utcDateTime.toInstant().toString(); // Formats as "2024-01-10T07:11:25.152Z"
+                        gen.writeString(isoString);
+                    }
                 }
-            }
-        });
-        
-        return builder
-            .modules(javaTimeModule)
-            .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-            .build();
+            });
+            
+            builder.modules(javaTimeModule);
+            builder.featuresToDisable(com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        };
     }
 }
 

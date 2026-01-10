@@ -9,11 +9,10 @@ import org.springframework.scheduling.annotation.EnableAsync;
 public class CampexApplication {
 
     public static void main(String[] args) {
+        // Set default timezone to UTC before Spring Boot initializes
+        // This ensures consistent behavior - dates in DB will be stored in UTC
+        // JacksonConfig will serialize them correctly as UTC for API responses
+        java.util.TimeZone.setDefault(java.util.TimeZone.getTimeZone("UTC"));
         SpringApplication.run(CampexApplication.class, args);
-    }
-
-    @jakarta.annotation.PostConstruct
-    public void init() {
-        java.util.TimeZone.setDefault(java.util.TimeZone.getTimeZone("Asia/Kolkata"));
     }
 }
