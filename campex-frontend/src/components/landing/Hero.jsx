@@ -42,20 +42,20 @@ const Hero = () => {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <Link to={ROUTES.SIGNUP}>
-                <Button size="lg" className="w-full sm:w-auto">
+                <Button size="lg" className="w-full sm:w-auto h-14">
                   Get Started
                   <ArrowRight className="ml-2" size={20} />
                 </Button>
               </Link>
 
               <a href="#how-it-works">
-                <Button variant="secondary" size="lg" className="w-full sm:w-auto">
+                <Button variant="secondary" size="lg" className="w-full sm:w-auto h-14">
                   Learn More
                 </Button>
               </a>
             </div>
 
-            
+
           </div>
 
           {/* Right: Illustration */}
@@ -79,11 +79,10 @@ const Hero = () => {
                       <button onClick={() => toggleSave('book')}>
                         <Heart
                           size={20}
-                          className={`transition-colors ${
-                            savedItems.book
+                          className={`transition-colors ${savedItems.book
                               ? 'fill-red-500 text-red-500'
                               : 'text-gray-800'
-                          }`}
+                            }`}
                         />
                       </button>
                     </div>
@@ -104,11 +103,10 @@ const Hero = () => {
                       <button onClick={() => toggleSave('calculator')}>
                         <Heart
                           size={20}
-                          className={`transition-colors ${
-                            savedItems.calculator
+                          className={`transition-colors ${savedItems.calculator
                               ? 'fill-red-500 text-red-500'
                               : 'text-gray-800'
-                          }`}
+                            }`}
                         />
                       </button>
                     </div>
@@ -127,11 +125,10 @@ const Hero = () => {
                       <button onClick={() => toggleSave('coat')}>
                         <Heart
                           size={20}
-                          className={`transition-colors ${
-                            savedItems.coat
+                          className={`transition-colors ${savedItems.coat
                               ? 'fill-red-500 text-red-500'
                               : 'text-gray-800'
-                          }`}
+                            }`}
                         />
                       </button>
                     </div>
