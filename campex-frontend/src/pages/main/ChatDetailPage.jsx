@@ -185,10 +185,21 @@ const ChatDetailPage = () => {
                   >
                     <p>{msg.content}</p>
                     <p className={`text-xs mt-1 ${isOwn ? 'text-primary-100' : 'text-gray-500'}`}>
-                      {new Date(msg.createdAt).toLocaleTimeString([], {
-                        hour: '2-digit',
-                        minute: '2-digit',
-                      })}
+                      {msg.createdAt 
+                        ? (() => {
+                            try {
+                              const dateStr = typeof msg.createdAt === 'string' && !msg.createdAt.includes('Z') && !msg.createdAt.includes('+') && !msg.createdAt.includes('-', 10)
+                                ? msg.createdAt + 'Z'
+                                : msg.createdAt;
+                              return new Date(dateStr).toLocaleTimeString([], {
+                                hour: '2-digit',
+                                minute: '2-digit',
+                              });
+                            } catch {
+                              return '';
+                            }
+                          })()
+                        : ''}
                     </p>
                   </div>
                 </div>

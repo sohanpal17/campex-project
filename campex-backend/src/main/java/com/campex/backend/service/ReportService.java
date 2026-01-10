@@ -61,14 +61,16 @@ public class ReportService {
             reportRepository.save(report);
             System.err.println("DEBUG: Report saved successfully with ID: " + report.getId());
 
-            // Send Email to Admin (Safe Fail inside the main try)
+            // Send Email to Admin (Use synchronous method, but email failure won't break report creation)
             try {
                 System.err.println("DEBUG: Attempting to send email...");
                 sendReportEmail(report);
-                System.err.println("DEBUG: Email sent successfully");
+                System.err.println("DEBUG: Email attempt completed (check logs for success/failure)");
             } catch (Exception e) {
                 System.err.println("DEBUG: Failed to send report email: " + e.getMessage());
                 e.printStackTrace();
+                // Email failure is non-critical - report is already saved successfully
+                // The EmailService will log detailed error information
             }
 
         } catch (Exception e) {
@@ -99,6 +101,7 @@ public class ReportService {
 
         body.append("\nPlease check the admin dashboard for more details.");
 
-        emailService.sendSimpleMessage(to, subject, body.toString());
+        // Use synchronous method for critical report emails to ensure they're sent
+        emailService.sendSimpleMessageSync(to, subject, body.toString());
     }
 }
