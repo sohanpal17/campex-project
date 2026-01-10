@@ -17,14 +17,15 @@ const CampaignCarousel = ({ campaigns, onClose }) => {
 
     // Auto-rotate every 5 seconds
     useEffect(() => {
-        if (campaigns.length <= 1) return;
+        // Stop rotation if we only have 1 campaign OR if the full image modal is open
+        if (campaigns.length <= 1 || showFullImage) return;
 
         const interval = setInterval(() => {
             setCurrentIndex((prev) => (prev + 1) % campaigns.length);
         }, 5000);
 
         return () => clearInterval(interval);
-    }, [campaigns.length]);
+    }, [campaigns.length, showFullImage]);
 
     // Load interest status for all campaigns
     useEffect(() => {
@@ -155,8 +156,8 @@ const CampaignCarousel = ({ campaigns, onClose }) => {
                                     }}
                                     disabled={isUpdating}
                                     className={`flex items-center gap-2 px-3 py-1.5 rounded-full font-medium transition-all border disabled:opacity-50 ${isLiked
-                                            ? 'bg-red-500 text-white border-red-500 hover:bg-red-600'
-                                            : 'bg-white/10 text-white border-white/20 hover:bg-white/20 backdrop-blur-md'
+                                        ? 'bg-red-500 text-white border-red-500 hover:bg-red-600'
+                                        : 'bg-white/10 text-white border-white/20 hover:bg-white/20 backdrop-blur-md'
                                         }`}
                                 >
                                     <Heart size={16} fill={isLiked ? 'currentColor' : 'none'} className="transition-all" />
