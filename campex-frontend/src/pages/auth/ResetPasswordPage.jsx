@@ -5,9 +5,10 @@ import { KeyRound, Eye, EyeOff } from 'lucide-react';
 import { authService } from '@/services/auth.service';
 import { validatePassword } from '@/utils/validators';
 import { handleError, handleSuccess } from '@/utils/errorHandler';
-import { ROUTES } from '@/constants';
+import { ROUTES, VERIFICATION_CODE_LENGTH } from '@/constants';
 import Input from '@/components/common/Input';
 import Button from '@/components/common/Button';
+import VerificationCodeInput from '@/components/auth/VerificationCodeInput';
 
 const ResetPasswordPage = () => {
     const navigate = useNavigate();
@@ -15,6 +16,7 @@ const ResetPasswordPage = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [email, setEmail] = useState('');
+    const [code, setCode] = useState('');
     const [step, setStep] = useState(1); // 1: email, 2: code, 3: new password
 
     const {
@@ -42,10 +44,17 @@ const ResetPasswordPage = () => {
     };
 
     // Step 2: Verify code
-    const handleVerifyCode = async (data) => {
+    const handleVerifyCode = async (e) => {
+        if (e) e.preventDefault();
+
+        if (code.length !== VERIFICATION_CODE_LENGTH) {
+            handleError(null, 'Please enter the complete verification code');
+            return;
+        }
+
         setIsLoading(true);
         try {
-            await authService.verifyPasswordResetCode(email, data.code);
+            await authService.verifyPasswordResetCode(email, code);
             setStep(3);
             handleSuccess('Code verified! Please enter your new password.');
             reset();
@@ -91,7 +100,16 @@ const ResetPasswordPage = () => {
                     </h1>
                     <p className="text-gray-600">
                         {step === 1 && 'Enter your email to receive a verification code'}
-                        {step === 2 && `We sent a 6-digit code to ${email}`}
+                        {step === 2 && (
+                            <>
+                                <p>We sent a 6-digit code to {email}</p>
+                                <div className="mt-4 bg-amber-50 border border-amber-200 rounded-md p-3 mx-auto">
+                                    <p className="text-sm text-amber-800 font-medium">
+                                        Check your Spam folder if you don't see it
+                                    </p>
+                                </div>
+                            </>
+                        )}
                         {step === 3 && 'Enter your new password'}
                     </p>
                 </div>
@@ -127,24 +145,22 @@ const ResetPasswordPage = () => {
                 )}
 
                 {step === 2 && (
-                    <form onSubmit={handleSubmit(handleVerifyCode)} className="space-y-6">
-                        <Input
-                            label="Verification Code"
-                            type="text"
-                            placeholder="Enter 6-digit code"
-                            maxLength={6}
-                            required
-                            error={errors.code?.message}
-                            {...register('code', {
-                                required: 'Verification code is required',
-                                pattern: {
-                                    value: /^[0-9]{6}$/,
-                                    message: 'Code must be 6 digits',
-                                },
-                            })}
-                        />
+                    <div className="space-y-6">
+                        <div className="flex justify-center">
+                            <VerificationCodeInput
+                                length={VERIFICATION_CODE_LENGTH}
+                                value={code}
+                                onChange={setCode}
+                                disabled={isLoading}
+                            />
+                        </div>
 
-                        <Button type="submit" className="w-full" loading={isLoading}>
+                        <Button
+                            onClick={handleVerifyCode}
+                            className="w-full"
+                            loading={isLoading}
+                            disabled={code.length !== VERIFICATION_CODE_LENGTH}
+                        >
                             Verify Code
                         </Button>
 
@@ -157,7 +173,7 @@ const ResetPasswordPage = () => {
                                 Resend Code
                             </button>
                         </div>
-                    </form>
+                    </div>
                 )}
 
                 {step === 3 && (

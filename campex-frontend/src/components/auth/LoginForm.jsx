@@ -6,11 +6,13 @@ import { authService } from '@/services/auth.service';
 import { validateEmail } from '@/utils/validators';
 import { handleError, handleSuccess } from '@/utils/errorHandler';
 import { ROUTES } from '@/constants';
+import { useAuth } from '@/context/AuthContext';
 import Input from '@/components/common/Input';
 import Button from '@/components/common/Button';
 
 const LoginForm = () => {
   const navigate = useNavigate();
+  const { refreshUserProfile } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -24,8 +26,22 @@ const LoginForm = () => {
     setIsLoading(true);
     try {
       await authService.login(data.email, data.password);
-      handleSuccess('Login successful!');
-      navigate(ROUTES.HOME);
+
+      // Attempt to refresh profile to check if it exists
+      try {
+        const profile = await refreshUserProfile();
+        handleSuccess('Login successful!');
+
+        if (profile && profile.fullName && profile.academicYear) {
+          navigate(ROUTES.HOME);
+        } else {
+          // No profile or incomplete profile -> Onboarding flow
+          navigate(ROUTES.VERIFY_EMAIL, { state: { email: data.email, codeSent: false }, replace: true });
+        }
+      } catch (error) {
+        // If 422/404, it means no profile
+        navigate(ROUTES.VERIFY_EMAIL, { state: { email: data.email, codeSent: false }, replace: true });
+      }
     } catch (error) {
       let errorMessage = 'Failed to login';
 

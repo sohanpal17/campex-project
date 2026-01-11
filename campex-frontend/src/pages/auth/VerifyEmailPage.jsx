@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { Mail } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext';
 import { authService } from '@/services/auth.service';
 import { handleError, handleSuccess } from '@/utils/errorHandler';
 import { ROUTES, VERIFICATION_CODE_LENGTH } from '@/constants';
@@ -10,13 +11,15 @@ import VerificationCodeInput from '@/components/auth/VerificationCodeInput';
 const VerifyEmailPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { signOut } = useAuth();
   const email = location.state?.email || '';
 
   const [code, setCode] = useState('');
   const [isVerifying, setIsVerifying] = useState(false);
   const [isResending, setIsResending] = useState(false);
-  const [countdown, setCountdown] = useState(60);
-  const [canResend, setCanResend] = useState(false);
+  // If code was just sent (from signup), wait 60s. Otherwise (from login), allow immediate resend.
+  const [countdown, setCountdown] = useState(location.state?.codeSent ? 60 : 0);
+  const [canResend, setCanResend] = useState(!location.state?.codeSent);
 
   // Countdown timer for resend
   useEffect(() => {
@@ -101,6 +104,11 @@ const VerifyEmailPage = () => {
             We sent a 6-digit code to
           </p>
           <p className="text-gray-900 font-medium mt-1">{email}</p>
+          <div className="mt-4 bg-amber-50 border border-amber-200 rounded-md p-3">
+            <p className="text-sm text-amber-800 font-medium">
+              Check your Spam folder if you don't see it in your inbox
+            </p>
+          </div>
         </div>
 
         {/* Code Input */}
@@ -143,14 +151,35 @@ const VerifyEmailPage = () => {
           )}
         </div>
 
-        {/* Change Email */}
-        <div className="mt-6 text-center">
-          <Link
-            to={ROUTES.SIGNUP}
+        {/* Change Email & Login Options */}
+        <div className="mt-6 flex flex-col gap-2 text-center">
+          <button
+            onClick={async () => {
+              try {
+                await signOut();
+                navigate(ROUTES.SIGNUP);
+              } catch (error) {
+                console.error(error);
+              }
+            }}
             className="text-sm text-gray-600 hover:text-gray-900"
           >
             Change Email
-          </Link>
+          </button>
+
+          <button
+            onClick={async () => {
+              try {
+                await signOut();
+                navigate(ROUTES.LOGIN);
+              } catch (error) {
+                console.error(error);
+              }
+            }}
+            className="text-sm text-primary-600 hover:text-primary-700 font-medium"
+          >
+            Already verified? Login
+          </button>
         </div>
       </div>
     </div>

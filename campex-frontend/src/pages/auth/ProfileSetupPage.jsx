@@ -1,4 +1,4 @@
-import { useLocation, Link } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { UserCircle } from 'lucide-react';
 import { APP_NAME, ROUTES } from '@/constants';
 import { useAuth } from '@/context/AuthContext';
@@ -6,8 +6,9 @@ import ProfileSetupForm from '@/components/auth/ProfileSetupForm';
 import Button from '@/components/common/Button';
 
 const ProfileSetupPage = () => {
+  const navigate = useNavigate(); // Add navigate
   const location = useLocation();
-  const { user } = useAuth();
+  const { user, signOut } = useAuth(); // Add signOut
   const email = location.state?.email || user?.email || '';
 
   if (!email) {
@@ -45,6 +46,26 @@ const ProfileSetupPage = () => {
 
         {/* Profile Setup Form */}
         <ProfileSetupForm email={email} />
+
+        {/* Logout Option */}
+        <div className="mt-6 text-center border-t pt-4">
+          <p className="text-sm text-gray-600 mb-2">
+            Want to use a different account?
+          </p>
+          <button
+            onClick={async () => {
+              try {
+                await signOut();
+                navigate(ROUTES.LOGIN);
+              } catch (error) {
+                console.error(error);
+              }
+            }}
+            className="text-sm text-primary-600 hover:text-primary-700 font-medium"
+          >
+            Logout & Login
+          </button>
+        </div>
       </div>
     </div>
   );

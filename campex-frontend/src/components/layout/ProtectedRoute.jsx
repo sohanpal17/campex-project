@@ -4,7 +4,7 @@ import Loader from '@/components/common/Loader';
 import { ROUTES } from '@/constants';
 
 const ProtectedRoute = ({ children }) => {
-  const { user, loading } = useAuth();
+  const { user, userProfile, loading } = useAuth();
 
   if (loading) {
     return (
@@ -17,6 +17,12 @@ const ProtectedRoute = ({ children }) => {
   if (!user) {
     return <Navigate to={ROUTES.LOGIN} replace />;
   }
+
+  // Force onboarding: If user exists but has no profile, redirect to Verify Email
+  if (!userProfile || !userProfile.fullName || !userProfile.academicYear) {
+    return <Navigate to={ROUTES.VERIFY_EMAIL} state={{ email: user?.email }} replace />;
+  }
+
 
   return children;
 };

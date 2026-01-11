@@ -6,6 +6,7 @@ import MainLayout from '@/components/layout/MainLayout';
 import AuthLayout from '@/components/layout/AuthLayout';
 import ProtectedRoute from '@/components/layout/ProtectedRoute';
 import PublicRoute from '@/components/layout/PublicRoute';
+import SignupRoute from '@/components/layout/SignupRoute';
 
 // Lazy load pages
 const LandingPage = lazy(() => import('@/pages/public/LandingPage'));
@@ -37,11 +38,8 @@ export const routes = [
   // Public Routes
   {
     path: ROUTES.LANDING,
-    element: (
-      <PublicRoute>
-        <LandingPage />
-      </PublicRoute>
-    ),
+    path: ROUTES.LANDING,
+    element: <LandingPage />,
   },
 
   // Auth Routes with Auth Layout
@@ -59,9 +57,9 @@ export const routes = [
       {
         path: ROUTES.SIGNUP,
         element: (
-          <PublicRoute>
+          <SignupRoute>
             <SignupPage />
-          </PublicRoute>
+          </SignupRoute>
         ),
       },
       {

@@ -4,7 +4,7 @@ import Loader from '@/components/common/Loader';
 import { ROUTES } from '@/constants';
 
 const PublicRoute = ({ children }) => {
-  const { user, loading } = useAuth();
+  const { user, userProfile, loading } = useAuth();
 
   if (loading) {
     return (
@@ -15,7 +15,12 @@ const PublicRoute = ({ children }) => {
   }
 
   if (user) {
-    return <Navigate to={ROUTES.HOME} replace />;
+    if (userProfile && userProfile.fullName && userProfile.academicYear) {
+      return <Navigate to={ROUTES.HOME} replace />;
+    } else {
+      // User is logged in but has no profile -> force onboarding
+      return <Navigate to={ROUTES.VERIFY_EMAIL} state={{ email: user.email }} replace />;
+    }
   }
 
   return children;

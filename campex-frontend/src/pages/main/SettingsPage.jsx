@@ -36,9 +36,9 @@ const SettingsPage = () => {
 
   const handleLogout = async () => {
     try {
+      navigate(ROUTES.LANDING);
       await signOut();
       handleSuccess('Logged out successfully');
-      navigate(ROUTES.LANDING);
     } catch (error) {
       handleError(error, 'Failed to logout');
     }
@@ -48,9 +48,9 @@ const SettingsPage = () => {
     setIsDeleting(true);
     try {
       await userService.deleteAccount();
+      navigate(ROUTES.LANDING);
       await signOut(); // Sign out after deletion
       handleSuccess('Account deleted successfully');
-      navigate(ROUTES.LANDING);
     } catch (error) {
       handleError(error, 'Failed to delete account');
       setIsDeleting(false);

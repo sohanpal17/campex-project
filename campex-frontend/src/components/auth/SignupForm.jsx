@@ -34,7 +34,7 @@ const SignupForm = () => {
       handleSuccess('Account created! Please verify your email.');
 
       // Navigate to verification page with email in state
-      navigate(ROUTES.VERIFY_EMAIL, { state: { email: data.email }, replace: true });
+      navigate(ROUTES.VERIFY_EMAIL, { state: { email: data.email, codeSent: true }, replace: true });
     } catch (error) {
       handleError(error, 'Failed to create account');
     } finally {
@@ -176,7 +176,7 @@ const SignupForm = () => {
         )}
       </div>
 
-      
+
 
       {/* Submit Button */}
       <Button type="submit" className="w-full" loading={isLoading}>

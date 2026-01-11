@@ -37,7 +37,6 @@ const LandingPage = () => {
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-6">
-
               <Link
                 to={ROUTES.LOGIN}
                 className="text-gray-700 hover:text-primary-600 font-medium transition-colors"
@@ -93,7 +92,7 @@ const LandingPage = () => {
         <HowItWorks />
       </motion.div>
 
-  
+
 
       <motion.div
         initial="hidden"

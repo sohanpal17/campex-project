@@ -20,6 +20,7 @@ export const AuthProvider = ({ children }) => {
       if (firebaseUser) {
         // User is signed in - clear cache to fetch fresh data
         queryClient.clear();
+        setLoading(true); // Ensure loading is true while we fetch profile
         setUser(firebaseUser);
 
         // Fetch user profile from backend

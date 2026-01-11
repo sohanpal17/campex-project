@@ -25,9 +25,9 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     try {
+      navigate(ROUTES.LANDING);
       await signOut();
       handleSuccess('Logged out successfully');
-      navigate(ROUTES.LANDING);
     } catch (error) {
       handleError(error, 'Failed to logout');
     }
