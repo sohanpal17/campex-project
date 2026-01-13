@@ -46,7 +46,7 @@ const ImageUploader = ({ images, onImagesChange, moderationStatus = {} }) => {
             {isDragActive ? 'Drop images here' : 'Drag & drop images or click to browse'}
           </p>
           <p className="text-sm text-gray-500">
-            Max {MAX_IMAGES_PER_PRODUCT} images • JPG, PNG, WebP • Max 5MB each
+            Max {MAX_IMAGES_PER_PRODUCT} images • JPG, JPEG, PNG, WebP • Max 5MB each
           </p>
         </div>
       )}

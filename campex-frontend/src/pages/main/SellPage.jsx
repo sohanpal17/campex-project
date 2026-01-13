@@ -425,6 +425,11 @@ const SellPage = () => {
                           ? '💰 Negotiable'
                           : '🔒 Fixed Price'}
                     </Badge>
+                    {formData.isAvailableForRent && (
+                      <Badge variant="info">
+                        🤝 Rent Available
+                      </Badge>
+                    )}
                   </div>
 
                   {/* Description */}

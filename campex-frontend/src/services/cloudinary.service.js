@@ -26,7 +26,7 @@ export const cloudinaryService = {
 
     // Validate file
     if (!isValidImageFile(file)) {
-      throw new Error('Invalid file type. Please upload JPG, PNG, or WebP images.');
+      throw new Error('Invalid file type. Please upload JPG, JPEG, PNG, or WebP images.');
     }
 
     if (!isImageSizeValid(file, MAX_IMAGE_SIZE_MB)) {
