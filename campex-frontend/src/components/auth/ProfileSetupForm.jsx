@@ -79,7 +79,7 @@ const ProfileSetupForm = ({ email }) => {
       <Input
         label="Phone Number (Optional)"
         type="tel"
-        placeholder="98765 43210"
+        placeholder="Your phone number"
         error={errors.phoneNumber?.message}
         {...register('phoneNumber', {
           pattern: {
