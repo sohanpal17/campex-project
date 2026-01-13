@@ -44,9 +44,9 @@ public class ProductService {
                 .description(request.getDescription())
                 .category(request.getCategory())
                 .price(request.getPrice())
-                .isFree(request.isFree())
-                .isNegotiable(request.isNegotiable())
-                .isAvailableForRent(request.isAvailableForRent())
+                .isFree(Boolean.TRUE.equals(request.getIsFree()))
+                .isNegotiable(Boolean.TRUE.equals(request.getIsNegotiable()))
+                .isAvailableForRent(Boolean.TRUE.equals(request.getIsAvailableForRent()))
                 .images(request.getImages())
                 .status("ACTIVE")
                 .build();

@@ -170,7 +170,7 @@ const ProductCard = ({ product, onSaveToggle }) => {
       {/* Content */}
       <div className="p-4">
         {/* Title */}
-        <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">
+        <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2 h-14">
           {product.title}
         </h3>
 

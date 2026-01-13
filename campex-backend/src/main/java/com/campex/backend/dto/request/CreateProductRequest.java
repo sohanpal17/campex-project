@@ -23,11 +23,11 @@ public class CreateProductRequest {
 
     private BigDecimal price;
 
-    private boolean isFree;
+    private Boolean isFree;
 
-    private boolean isNegotiable;
+    private Boolean isNegotiable;
 
-    private boolean isAvailableForRent;
+    private Boolean isAvailableForRent;
 
     @NotNull
     @Size(min = 1, max = 5)
