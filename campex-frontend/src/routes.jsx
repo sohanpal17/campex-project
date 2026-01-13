@@ -38,7 +38,6 @@ export const routes = [
   // Public Routes
   {
     path: ROUTES.LANDING,
-    path: ROUTES.LANDING,
     element: <LandingPage />,
   },
 

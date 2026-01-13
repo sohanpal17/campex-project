@@ -16,7 +16,7 @@ import Select from '@/components/common/Select';
 import Button from '@/components/common/Button';
 import Badge from '@/components/common/Badge';
 import { formatPrice } from '@/utils/formatters';
-import { getCategoryIcon } from '@/constants/categories';
+
 import api from '@/services/api';
 
 const SellPage = () => {
@@ -416,7 +416,7 @@ const SellPage = () => {
                   {/* Tags */}
                   <div className="flex flex-wrap gap-2 mb-4">
                     <Badge variant="primary">
-                      {getCategoryIcon(formData.category)} {CATEGORIES.find(c => c.value === formData.category)?.label || formData.category}
+                      {CATEGORIES.find(c => c.value === formData.category)?.label || formData.category}
                     </Badge>
                     <Badge variant={formData.priceType === 'FREE' ? 'success' : 'accent'}>
                       {formData.priceType === 'FREE'
