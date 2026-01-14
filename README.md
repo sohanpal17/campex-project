@@ -1,6 +1,5 @@
 # 🎓 Campex - The Trusted Campus Marketplace
 
-![Campex Banner](https://via.placeholder.com/1200x400/79864B/FFFFFF?text=CAMPEX+-+Buy,+Sell,+Connect)
 
 <div align="center">
 
@@ -23,29 +22,43 @@
 Students struggle to buy and sell campus essentials. WhatsApp groups are spammy and unorganized, while open marketplaces are unsafe and full of irrelevant listings.
 
 ## 💡 The Solution
-**Campex** provides a verified, organized, and AI-moderated platform where every user is a confirmed student from your university.
+**Campex** provides a verified, organized, and AI-moderated platform where every user is confirmed to be from your university.
 
 ---
 
 ## ✨ Key Features
 
-### 🔐 Trust & Security
-*   **Domain-Locked Auth:** Sign-up is strictly restricted to university email domains.
-*   **OTP Verification:** Custom email verification flow using Gmail SMTP.
-*   **Identity Verification:** Users must set up a profile with their Academic Year (FE, SE, TE, BE).
+### 1. 🔐 Campus-Only Access
+*   **Verified Students Only:** Access is strictly limited to students from the same university.
+*   **Email Verification:** Access is granted through verified university email IDs (e.g., `@ves.ac.in`).
+*   **Safe Marketplace:** Creates a safe and reliable campus marketplace by eliminating external risks.
 
-### 🛒 Smart Marketplace
-*   **Vertical Feed:** Instagram-style scrolling feed for easy browsing.
-*   **Advanced Filters:** Filter by **Category** (Books, Stationery, Electronics) and **Price Type** (Free, Fixed, Negotiable).
-*   **Live Search:** Debounced search with instant results.
+### 2. 🛒 Item Listings
+*   **Versatile Trading:** Students can list items to sell, give away, or rent.
+*   **Rich Content:** Listings include uploaded images and detailed descriptions of the item.
+*   **Categorized Layout:** Items are organized into categories like **Books**, **Question Papers**, **Electronics**, and others.
+*   **Pricing Options:** Sellers can choose price tags like **Fixed Price**, **Negotiable**, **Free** or **Rent Available**.
+*   **Report System:** Option for users to report inappropriate listings with reasons to maintain quality.
 
-### 🛡️ AI & Moderation
-*   **Automated Content Safety:** Integrated **Google Cloud Vision API** to scan uploaded images. Inappropriate or unsafe content is blocked instantly before listing.
-*   **Community Safety:** Built-in reporting system and user blocking mechanisms.
+### 3. 🛡️ AI Image Moderation
+*   **Secure Uploads:** AI-based image moderation ensures all uploaded content is safe.
+*   **Explicit Content Blocker:** Prevents users from posting inappropriate, unsafe, or explicit images.
 
-### 💬 Interaction
-*   **Real-Time Chat:** Seamless in-app messaging to negotiate deals and arrange meetups.
-*   **Notifications:** Push notifications via **Firebase Cloud Messaging (FCM)** for new messages and wishlist updates.
+### 4. 🙋 Request Items
+*   **Post Requests:** Students can put up a request for specific items they need.
+*   **Smart Notifications:** Users get notified if someone requests an item they might have to lend or give out, facilitating a chat.
+
+### 5. 💬 In-Platform Chat
+*   **Direct Communication:** Chat with sellers directly through the platform to negotiate and discuss details.
+*   **Meetup Coordination:** Decide on a safe meet-up place on campus.
+*   **Block Feature:** Allows users to block a user if any inappropriate activity is noticed.
+
+### 6. 📢 Advertisement Posters
+*   **Campus Initiatives:** User can raise and post advertisement posters by sending a mail to us.
+*   **Support Student Activities:** Supports campus and student initiatives, events, and announcements.
+
+### 7. 🔔 Notifications
+*   **Stay Informed:** In-app notifications for direct messages and item requests ensure you never miss an update.
 
 ---
 
@@ -69,7 +82,7 @@ Students struggle to buy and sell campus essentials. WhatsApp groups are spammy 
 
 | **Landing Page** | **Home Feed** | **Selling Wizard** |
 |:---:|:---:|:---:|
-| <img src="https://via.placeholder.com/300x500?text=Landing" width="300" /> | <img src="https://via.placeholder.com/300x500?text=Feed" width="300" /> | <img src="https://via.placeholder.com/300x500?text=Sell+Page" width="300" /> |
+| <img src="Screenshots/LandingPage.png" width="300" /> | <img src="Screenshots/HomePage.png" width="300" /> | <img src="Screenshots/SellPage.jpeg" width="300" /> |
 
 ---
 
@@ -85,8 +98,8 @@ Follow these instructions to set up the project locally.
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/yourusername/campex.git
-cd campex
+git clone https://github.com/sohanpal17/campex-project.git
+cd campex-project
 ```
 
 ### 2. Backend Setup
@@ -175,9 +188,8 @@ Contributions are what make the open-source community such an amazing place to l
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## 📄 License
-Distributed under the MIT License. See `LICENSE` for more information.
+
 
 <div align="center">
-  <p>Made with ❤️ by the Campex Team</p>
+  <p><h3>Made by Savani and Sohan<h3></p>
 </div>
