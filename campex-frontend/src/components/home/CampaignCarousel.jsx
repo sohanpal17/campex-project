@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, X, Maximize2, Heart } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { useQueryClient } from '@tanstack/react-query';
 import { campaignService } from '@/services/campaign.service';
 import { handleError, handleSuccess } from '@/utils/errorHandler';
@@ -214,17 +215,86 @@ const CampaignCarousel = ({ campaigns, onClose }) => {
                     {/* Close Modal Button */}
                     <button
                         onClick={() => setShowFullImage(false)}
-                        className="absolute top-6 right-6 p-2 bg-white/10 text-white hover:bg-white/20 rounded-full transition-colors"
+                        className="absolute top-6 right-6 p-2 bg-white/10 text-white hover:bg-white/20 rounded-full transition-colors z-50"
                     >
                         <X size={32} />
                     </button>
 
-                    <img
-                        src={posterUrl}
-                        alt={currentCampaign?.title}
-                        className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl animate-in zoom-in-95 duration-300"
+                    {/* Navigation Arrows for Modal */}
+                    {campaigns.length > 1 && (
+                        <>
+                            <button
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    goToPrevious();
+                                }}
+                                className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-white/10 hover:bg-white/20 text-white rounded-full transition-colors z-50"
+                            >
+                                <ChevronLeft size={32} />
+                            </button>
+
+                            <button
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    goToNext();
+                                }}
+                                className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-white/10 hover:bg-white/20 text-white rounded-full transition-colors z-50"
+                            >
+                                <ChevronRight size={32} />
+                            </button>
+                        </>
+                    )}
+
+                    {/* Main Image with Swipe Support */}
+                    <motion.div
+                        className="w-full h-full flex items-center justify-center"
                         onClick={(e) => e.stopPropagation()}
-                    />
+                    >
+                        <motion.img
+                            key={currentIndex} // Re-render on index change for animation
+                            src={posterUrl}
+                            alt={currentCampaign?.title}
+                            className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl"
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.9 }}
+                            transition={{ duration: 0.2 }}
+                            drag="x"
+                            dragConstraints={{ left: 0, right: 0 }}
+                            dragElastic={0.2}
+                            onDragEnd={(e, { offset, velocity }) => {
+                                const swipeConfidenceThreshold = 10000;
+                                const swipePower = Math.abs(offset.x) * velocity.x;
+
+                                if (swipePower < -swipeConfidenceThreshold) {
+                                    goToNext();
+                                } else if (swipePower > swipeConfidenceThreshold) {
+                                    goToPrevious();
+                                } else if (Math.abs(offset.x) > 100) {
+                                    // Fallback for slow drags
+                                    if (offset.x > 0) goToPrevious();
+                                    else goToNext();
+                                }
+                            }}
+                        />
+                    </motion.div>
+
+                    {/* Modal Dots */}
+                    {campaigns.length > 1 && (
+                        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-50">
+                            {campaigns.map((_, index) => (
+                                <button
+                                    key={index}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setCurrentIndex(index);
+                                    }}
+                                    className={`w-2 h-2 rounded-full transition-all ${index === currentIndex ? 'bg-white w-6' : 'bg-white/50'
+                                        }`}
+                                />
+                            ))}
+                        </div>
+                    )}
                 </div>
             )}
         </>
