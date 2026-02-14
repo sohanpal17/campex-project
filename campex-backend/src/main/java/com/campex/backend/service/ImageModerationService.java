@@ -122,9 +122,7 @@ public class ImageModerationService {
 
     // Stricter check for violence - also blocks UNLIKELY
     private boolean isViolent(Likelihood likelihood) {
-        return likelihood == Likelihood.UNLIKELY ||
-               likelihood == Likelihood.POSSIBLE || 
-               likelihood == Likelihood.LIKELY || 
+        return likelihood == Likelihood.LIKELY || 
                likelihood == Likelihood.VERY_LIKELY;
     }
 }

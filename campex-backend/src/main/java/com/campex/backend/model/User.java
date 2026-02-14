@@ -38,6 +38,11 @@ public class User {
 
     private String fcmToken; // For push notifications
 
+    private String linkedinUrl;
+
+    @Column(length = 500)
+    private String bio;
+
     @CreationTimestamp
     private LocalDateTime createdAt;
 

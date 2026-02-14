@@ -14,6 +14,8 @@ public class UserResponse {
     private String profilePhotoUrl;
     private String academicYear;
     private String phoneNumber;
+    private String linkedinUrl;
+    private String bio;
     private boolean isVerified;
     private LocalDateTime createdAt;
 }

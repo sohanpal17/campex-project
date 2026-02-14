@@ -36,6 +36,8 @@ const EditProfilePage = () => {
       setValue('fullName', userProfile.fullName || '');
       setValue('academicYear', userProfile.academicYear || '');
       setValue('phoneNumber', userProfile.phoneNumber || '');
+      setValue('linkedinUrl', userProfile.linkedinUrl || '');
+      setValue('bio', userProfile.bio || '');
       setProfilePhotoPreview(userProfile.profilePhotoUrl);
     }
   }, [userProfile, setValue]);
@@ -92,6 +94,8 @@ const EditProfilePage = () => {
         fullName: data.fullName,
         academicYear: data.academicYear,
         phoneNumber: data.phoneNumber,
+        linkedinUrl: data.linkedinUrl,
+        bio: data.bio,
         profilePhotoUrl: photoUrl,
       };
 
@@ -231,19 +235,51 @@ const EditProfilePage = () => {
 
             {/* Phone Number */}
             <Input
-              label="Phone Number"
+              label="Phone Number (Optional)"
               type="tel"
               placeholder="Enter your phone number"
-              required
               error={errors.phoneNumber?.message}
               {...register('phoneNumber', {
-                required: 'Phone number is required',
                 pattern: {
                   value: /^[0-9]{10}$/,
                   message: 'Phone number must be 10 digits',
                 },
               })}
             />
+
+            {/* LinkedIn URL */}
+            <Input
+              label="LinkedIn Profile (Optional)"
+              type="url"
+              placeholder="https://linkedin.com/in/yourprofile"
+              error={errors.linkedinUrl?.message}
+              {...register('linkedinUrl', {
+                pattern: {
+                  value: /^https:\/\/[a-z]{2,3}\.linkedin\.com\/.*$/i,
+                  message: "Please enter a valid LinkedIn URL"
+                }
+              })}
+            />
+
+            {/* Bio */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Bio (Optional)
+              </label>
+              <textarea
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all resize-none h-24"
+                placeholder="Tell us a bit about yourself..."
+                {...register('bio', {
+                  maxLength: {
+                    value: 500,
+                    message: "Bio must be less than 500 characters"
+                  }
+                })}
+              />
+              {errors.bio && (
+                <p className="text-red-500 text-xs mt-1">{errors.bio.message}</p>
+              )}
+            </div>
 
             {/* Action Buttons */}
             <div className="flex gap-4 pt-4">

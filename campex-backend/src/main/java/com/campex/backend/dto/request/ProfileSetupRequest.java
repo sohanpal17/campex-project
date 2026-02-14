@@ -12,4 +12,7 @@ public class ProfileSetupRequest {
     private String academicYear; // FE, SE, TE, BE
 
     private String phoneNumber;
+
+    private String linkedinUrl;
+    private String bio;
 }

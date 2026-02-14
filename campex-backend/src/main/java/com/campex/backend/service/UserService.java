@@ -67,6 +67,8 @@ public class UserService {
             user.setFullName(request.getFullName());
             user.setAcademicYear(request.getAcademicYear());
             user.setPhoneNumber(request.getPhoneNumber());
+            user.setLinkedinUrl(request.getLinkedinUrl());
+            user.setBio(request.getBio());
             // Don't update email or firebaseUid as they shouldn't change
         } else {
             // Create new user profile
@@ -75,6 +77,8 @@ public class UserService {
                     .fullName(request.getFullName())
                     .academicYear(request.getAcademicYear())
                     .phoneNumber(request.getPhoneNumber())
+                    .linkedinUrl(request.getLinkedinUrl())
+                    .bio(request.getBio())
                     .email(email)
                     .isVerified(false)
                     .build();
@@ -99,11 +103,30 @@ public class UserService {
         if (request.getPhoneNumber() != null) {
             user.setPhoneNumber(request.getPhoneNumber());
         }
+
+        if (request.getLinkedinUrl() != null) {
+            user.setLinkedinUrl(request.getLinkedinUrl());
+        }
+
+        if (request.getBio() != null) {
+            user.setBio(request.getBio());
+        }
         
         // Always update profile photo URL when present in request (allows null to remove photo)
         user.setProfilePhotoUrl(request.getProfilePhotoUrl());
         
         return mapToUserResponse(userRepository.save(user));
+    }
+
+    @Transactional(readOnly = true)
+    public List<ProductResponse> getUserListings(Long userId) {
+        userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        return productRepository.findBySellerIdAndStatus(userId, "ACTIVE", Pageable.unpaged())
+                .stream()
+                .map(this::mapToProductResponse)
+                .collect(Collectors.toList());
     }
 
     public List<ProductResponse> getMyListings(String status) {
@@ -259,6 +282,8 @@ public class UserService {
                 .profilePhotoUrl(user.getProfilePhotoUrl())
                 .academicYear(user.getAcademicYear())
                 .phoneNumber(user.getPhoneNumber())
+                .linkedinUrl(user.getLinkedinUrl())
+                .bio(user.getBio())
                 .isVerified(user.isVerified())
                 .createdAt(user.getCreatedAt())
                 .build();
@@ -271,6 +296,8 @@ public class UserService {
                 .fullName(seller.getFullName())
                 .profilePhotoUrl(seller.getProfilePhotoUrl())
                 .academicYear(seller.getAcademicYear())
+                .bio(seller.getBio())
+                .linkedinUrl(seller.getLinkedinUrl())
                 .build();
 
         // Safely check if saved (may not have current user in all contexts)

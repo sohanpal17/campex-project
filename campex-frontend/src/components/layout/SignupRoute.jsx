@@ -14,10 +14,14 @@ const SignupRoute = ({ children }) => {
         );
     }
 
-    // Only redirect if user is authenticated AND has a profile
-    // This allows the signup flow to continue for newly created users
-    // who have a user object (from Firebase) but no profile yet
-    if (user && userProfile) {
+    // Redirect authenticated users based on their state
+    if (user) {
+        if (!user.emailVerified) {
+            return <Navigate to={ROUTES.VERIFY_EMAIL} replace state={{ email: user.email }} />;
+        }
+        if (!userProfile) {
+            return <Navigate to={ROUTES.PROFILE_SETUP} replace />;
+        }
         return <Navigate to={ROUTES.HOME} replace />;
     }
 

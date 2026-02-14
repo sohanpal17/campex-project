@@ -195,6 +195,8 @@ public class MessageService {
                 .profilePhotoUrl(otherUser.getProfilePhotoUrl())
                 .academicYear(otherUser.getAcademicYear())
                 .phoneNumber(otherUser.getPhoneNumber())
+                .linkedinUrl(otherUser.getLinkedinUrl())
+                .bio(otherUser.getBio())
                 .isVerified(otherUser.isVerified())
                 .createdAt(otherUser.getCreatedAt())
                 .build();

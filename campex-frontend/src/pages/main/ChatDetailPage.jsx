@@ -6,6 +6,7 @@ import { messageService } from '@/services/message.service';
 import { userService } from '@/services/user.service';
 import { handleError, handleSuccess } from '@/utils/errorHandler';
 import { useAuth } from '@/context/AuthContext';
+import UserProfileModal from '@/components/common/UserProfileModal';
 
 const ChatDetailPage = () => {
   const { id } = useParams();
@@ -14,6 +15,7 @@ const ChatDetailPage = () => {
   const queryClient = useQueryClient();
   const [message, setMessage] = useState('');
   const [showMenu, setShowMenu] = useState(false);
+  const [showProfileModal, setShowProfileModal] = useState(false);
   const messagesEndRef = useRef(null);
 
   // Fetch messages for this conversation
@@ -118,7 +120,10 @@ const ChatDetailPage = () => {
           <button onClick={() => navigate(-1)}>
             <ArrowLeft size={24} />
           </button>
-          <div className="flex items-center gap-3">
+          <div
+            className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity"
+            onClick={() => setShowProfileModal(true)}
+          >
             <div className="w-10 h-10 rounded-full bg-primary-500 flex items-center justify-center text-white font-medium">
               {otherUserInitial}
             </div>
@@ -185,20 +190,20 @@ const ChatDetailPage = () => {
                   >
                     <p>{msg.content}</p>
                     <p className={`text-xs mt-1 ${isOwn ? 'text-primary-100' : 'text-gray-500'}`}>
-                      {msg.createdAt 
+                      {msg.createdAt
                         ? (() => {
-                            try {
-                              const dateStr = typeof msg.createdAt === 'string' && !msg.createdAt.includes('Z') && !msg.createdAt.includes('+') && !msg.createdAt.includes('-', 10)
-                                ? msg.createdAt + 'Z'
-                                : msg.createdAt;
-                              return new Date(dateStr).toLocaleTimeString([], {
-                                hour: '2-digit',
-                                minute: '2-digit',
-                              });
-                            } catch {
-                              return '';
-                            }
-                          })()
+                          try {
+                            const dateStr = typeof msg.createdAt === 'string' && !msg.createdAt.includes('Z') && !msg.createdAt.includes('+') && !msg.createdAt.includes('-', 10)
+                              ? msg.createdAt + 'Z'
+                              : msg.createdAt;
+                            return new Date(dateStr).toLocaleTimeString([], {
+                              hour: '2-digit',
+                              minute: '2-digit',
+                            });
+                          } catch {
+                            return '';
+                          }
+                        })()
                         : ''}
                     </p>
                   </div>
@@ -217,7 +222,7 @@ const ChatDetailPage = () => {
             type="text"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            onKeyPress={(e) => e.key === 'Enter' && handleSend()}
+            onKeyDown={(e) => e.key === 'Enter' && handleSend(e)}
             placeholder="Type a message..."
             disabled={sendMutation.isPending}
             className="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 disabled:bg-gray-100"
@@ -231,6 +236,16 @@ const ChatDetailPage = () => {
           </button>
         </div>
       </div>
+
+      {
+        conversation?.otherUser && (
+          <UserProfileModal
+            user={conversation.otherUser}
+            isOpen={showProfileModal}
+            onClose={() => setShowProfileModal(false)}
+          />
+        )
+      }
     </div>
   );
 };

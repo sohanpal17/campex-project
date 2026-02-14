@@ -15,6 +15,7 @@ import ProductActions from '@/components/product/ProductActions';
 import Badge from '@/components/common/Badge';
 import Button from '@/components/common/Button';
 import Loader from '@/components/common/Loader';
+import UserProfileModal from '@/components/common/UserProfileModal';
 
 const ItemDetailsPage = () => {
   const { id } = useParams();
@@ -28,7 +29,9 @@ const ItemDetailsPage = () => {
   const [showActiveModal, setShowActiveModal] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isMarkingSold, setIsMarkingSold] = useState(false);
+
   const [isMarkingActive, setIsMarkingActive] = useState(false);
+  const [showProfileModal, setShowProfileModal] = useState(false);
 
   const { data: product, isLoading, refetch } = useQuery({
     queryKey: ['product', id],
@@ -181,12 +184,12 @@ const ItemDetailsPage = () => {
               </div>
 
               {/* Seller Info */}
-              <div className="mb-6 p-4 bg-gray-50 rounded-lg">
+              <div
+                className="mb-6 p-4 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors"
+                onClick={() => setShowProfileModal(true)}
+              >
                 <h3 className="text-sm font-medium text-gray-500 mb-2">Seller</h3>
-                <Link
-                  to={generateRoute.userListings(product.seller.id)}
-                  className="flex items-center gap-3 hover:opacity-80 transition-opacity"
-                >
+                <div className="flex items-center gap-3">
                   {product.seller.profilePhotoUrl ? (
                     <img
                       src={product.seller.profilePhotoUrl}
@@ -202,7 +205,7 @@ const ItemDetailsPage = () => {
                     <div className="font-medium text-gray-900">{product.seller.fullName}</div>
                     <div className="text-sm text-gray-500">{product.seller.academicYear}</div>
                   </div>
-                </Link>
+                </div>
               </div>
 
               {/* Description */}
@@ -391,6 +394,13 @@ const ItemDetailsPage = () => {
           </div>
         </div>
       )}
+
+      {/* User Profile Modal */}
+      <UserProfileModal
+        user={product.seller}
+        isOpen={showProfileModal}
+        onClose={() => setShowProfileModal(false)}
+      />
     </div>
   );
 };

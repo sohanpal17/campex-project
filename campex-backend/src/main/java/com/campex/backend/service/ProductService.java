@@ -184,6 +184,8 @@ public class ProductService {
                 .fullName(seller.getFullName())
                 .profilePhotoUrl(seller.getProfilePhotoUrl())
                 .academicYear(seller.getAcademicYear())
+                .bio(seller.getBio())
+                .linkedinUrl(seller.getLinkedinUrl())
                 .build();
 
         return ProductResponse.builder()

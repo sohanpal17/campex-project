@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Settings, Edit } from 'lucide-react';
+import { Settings, Edit, Linkedin } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { userService } from '@/services/user.service';
@@ -105,11 +105,12 @@ const ProfilePage = () => {
                 </div>
               )}
 
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900">{userProfile.fullName}</h1>
+              <div className="flex flex-col">
+                <h1 className="text-2xl font-bold text-gray-900 leading-tight">{userProfile.fullName}</h1>
                 <p className="text-gray-600">{maskEmail(userProfile.email)}</p>
-                <p className="text-sm text-gray-500">
-                  {userProfile.academicYear} • Joined {formatDate(userProfile.createdAt)}
+                <p className="text-sm text-gray-500 mt-1">
+                  {userProfile.academicYear ? `${userProfile.academicYear} • ` : ''}
+                  Joined {formatDate(userProfile.createdAt)}
                 </p>
               </div>
             </div>
@@ -117,13 +118,13 @@ const ProfilePage = () => {
             {/* Actions */}
             <div className="flex gap-3">
               <Link to={ROUTES.EDIT_PROFILE}>
-                <Button variant="secondary" className="flex items-center gap-2">
+                <Button variant="secondary" className="w-full h-13 flex items-center justify-center gap-2 whitespace-nowrap">
                   <Edit size={18} />
                   Edit Profile
                 </Button>
               </Link>
               <Link to={ROUTES.SETTINGS}>
-                <Button variant="outline" className="flex items-center gap-2">
+                <Button variant="secondary" className="w-full h-13 flex items-center justify-center gap-2 whitespace-nowrap">
                   <Settings size={18} />
                   Settings
                 </Button>

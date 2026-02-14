@@ -40,6 +40,11 @@ public class UserController {
         return ResponseEntity.ok(userService.getMyListings(status));
     }
 
+    @GetMapping("/{userId}/listings")
+    public ResponseEntity<List<ProductResponse>> getUserListings(@PathVariable Long userId) {
+        return ResponseEntity.ok(userService.getUserListings(userId));
+    }
+
     @GetMapping("/saved-items")
     public ResponseEntity<List<ProductResponse>> getSavedItems() {
         return ResponseEntity.ok(userService.getSavedItems());
